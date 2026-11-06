@@ -254,10 +254,109 @@ La suma empieza en cero. En Scala y Python, la lambda agrega al subtotal el impo
 
 ### Capturas de ejecución
 
-- [Ejecución en Scala](img/scala.png)
-- [Ejecución en Java](img/java.png)
-- [Ejecución en Python](img/python.png)
+- [Captura de Scala](img/scala.png)
+- [Captura de Java](img/java.png)
+- [Captura de Python](img/python.png)
 
-## Parte 4 — Ampliar
+## Parte 4 — Ampliar: cuatro operaciones nuevas
+
+1. Elige cuatro operaciones de colecciones distintas de las vistas en clase.
+2. Para cada operación, explica qué hace, qué recibe y qué devuelve su lambda. Incluye un ejemplo en Scala con la lista de la Parte 3, su salida y una situación real donde la usarías.
+3. Plantea una pregunta sobre la lista y respóndela con una cadena que combine dos operaciones nuevas y una vista en clase. Explica cada paso.
+
+### 4.1 Operaciones elegidas
+
+Elegí `sortBy` para ordenar, `groupBy` para agrupar, `partition` para dividir la lista y `find` para buscar. Los ejemplos usan los mismos 12 productos de la Parte 3. El programa completo está en [Operaciones.sc](operaciones/Operaciones.sc).
+
+### 4.2 Fichas de las operaciones
+
+#### 1. `sortBy` — Ordenar por precio
+
+**Qué hace.** Ordena los productos usando el valor que devuelve la lambda como clave.
+
+**Lambda.** `p => p.precio` recibe un `Producto` y devuelve un `Int` con su precio. Scala usa ese número para ordenar de menor a mayor.
+
+**Situación real.** Una tienda en línea quiere mostrar los productos más baratos primero. Es un tipo nuevo de problema, porque se quiere ordenar toda la lista.
+
+```scala
+val ordenados = productos.sortBy(p => p.precio)
+println(ordenados.map(p => p.nombre).mkString(", "))
+```
+
+**Salida.** Lapiz, Pasta, Jabon, Arroz, Cuaderno, Cafe, Toalla, Mouse, Lampara, Mochila, Teclado, Monitor.
+
+#### 2. `groupBy` — Agrupar por categoría
+
+**Qué hace.** Crea un mapa donde cada categoría tiene su propia lista de productos.
+
+**Lambda.** `p => p.categoria` recibe un `Producto` y devuelve un `String` con la categoría que se usará como clave.
+
+**Situación real.** El encargado de la tienda quiere organizar el catálogo en secciones, como Alimentos y Hogar. Es un tipo nuevo de problema, porque cada elemento se coloca en el grupo que le corresponde.
+
+```scala
+val grupos = productos.groupBy(p => p.categoria)
+```
+
+**Salida al mostrar los nombres de cada grupo**
+
+| Categoría | Productos |
+| --- | --- |
+| Alimentos | Arroz, Cafe, Pasta |
+| Hogar | Jabon, Toalla, Lampara |
+| Papeleria | Cuaderno, Lapiz, Mochila |
+| Tecnologia | Mouse, Teclado, Monitor |
+
+#### 3. `partition` — Separar los productos con stock bajo
+
+**Qué hace.** Divide la lista en dos. La primera contiene los productos que cumplen la condición y la segunda contiene el resto.
+
+**Lambda.** `p => p.stock < 5` recibe un `Producto` y devuelve un `Boolean` que indica si tiene menos de cinco unidades.
+
+**Situación real.** El encargado de bodega necesita separar los artículos con stock bajo para revisarlos primero. Se parece a la selección de la Parte 3, con la diferencia de que aquí se conservan ambos grupos.
+
+```scala
+val (criticos, resto) = productos.partition(p => p.stock < 5)
+```
+
+**Salida al mostrar los nombres**
+
+- **Stock menor a 5:** Pasta, Lampara, Teclado, Monitor.
+- **Resto:** Arroz, Cafe, Jabon, Toalla, Mouse, Cuaderno, Lapiz, Mochila.
+
+#### 4. `find` — Buscar el primer producto agotado
+
+**Qué hace.** Devuelve la primera coincidencia como `Some(producto)`. Si no encuentra ninguna, devuelve `None`.
+
+**Lambda.** `p => p.stock == 0` recibe un `Producto` y devuelve un `Boolean` que indica si está agotado.
+
+**Situación real.** Un empleado quiere revisar el primer faltante según el orden del catálogo. Se parece a la selección de la Parte 3, pero aquí interesa una sola coincidencia.
+
+```scala
+val primerAgotado = productos.find(p => p.stock == 0)
+println(primerAgotado.map(p => p.nombre))
+```
+
+**Salida.** `Some(Pasta)`.
+
+### 4.3 Combinar operaciones
+
+**Pregunta.** ¿Cuál es el producto de tecnología más caro entre los que tienen menos de cinco unidades en stock?
+
+```scala
+val prioridad = productos
+  .filter(p => p.stock < 5)
+  .sortBy(p => -p.precio)
+  .find(p => p.categoria == "Tecnologia")
+
+println(prioridad.map(p => p.nombre))
+```
+
+1. `filter`, vista en clase, conserva los productos que tienen menos de cinco unidades.
+2. `sortBy`, una operación nueva, usa el precio con signo negativo para ordenar del más caro al más barato.
+3. `find`, otra operación nueva, toma el primer producto de tecnología en ese orden.
+
+**Salida.** `Some(Monitor)`. El monitor cuesta 150 USD y tiene 3 unidades en stock.
+
+[Captura de ejecución de la Parte 4](img/operaciones.png)
 
 ## Parte 5 — Comparar y concluir
