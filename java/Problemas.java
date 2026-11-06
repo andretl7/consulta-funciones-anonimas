@@ -35,3 +35,7 @@ System.out.println("3. Todos los precios son positivos = " + preciosValidos);
 // 4. Acumulación: sumar el valor de todas las existencias.
 var total = productos.stream().mapToInt(p -> p.precio() * p.stock()).reduce(0, (subtotal, importe) -> subtotal + importe);
 System.out.println("4. Valor total (USD) = " + total);
+
+// Ejecutar desde la raíz del repositorio:
+// jshell java/Problemas.java
+// Escribe /exit en JShell para volver a la terminal.

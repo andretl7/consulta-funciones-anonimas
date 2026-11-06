@@ -43,3 +43,6 @@ print("3. Todos los precios son positivos = " + str(precios_validos).lower())
 # 4. Acumulación: sumar el valor de todas las existencias.
 total = reduce(lambda subtotal, p: subtotal + p.precio * p.stock, productos, 0)
 print(f"4. Valor total (USD) = {total}")
+
+# Ejecutar desde la raíz del repositorio:
+# python3 python/problemas.py

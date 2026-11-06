@@ -32,3 +32,6 @@ println("3. Todos los precios son positivos = " + preciosValidos)
 // 4. Acumulación: sumar el valor de todas las existencias.
 val total = productos.foldLeft(0)((subtotal, p) => subtotal + p.precio * p.stock)
 println("4. Valor total (USD) = " + total)
+
+// Ejecutar desde la raíz del repositorio:
+// scala-cli run scala/Problemas.sc --server=false

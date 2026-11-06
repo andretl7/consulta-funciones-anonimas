@@ -42,3 +42,6 @@ val prioridad = productos
   .find(p => p.categoria == "Tecnologia")
 
 println("5. Combinacion = " + prioridad.map(p => p.nombre))
+
+// Ejecutar desde la raíz del repositorio:
+// scala-cli run operaciones/Operaciones.sc --server=false
