@@ -113,7 +113,7 @@ Elegí selección, transformación, validación y acumulación. Para los cuatro 
 
 En Scala defino una `case class Producto` y creo la lista directamente con `List(Producto(...), ...)`. En Java uso un `record` y en Python una `dataclass`. Los tres programas tienen los mismos productos en el mismo orden.
 
-Los programas completos están en [Scala](scala/Problemas.scala), [Java](java/Problemas.java) y [Python](python/problemas.py).
+Los programas completos están en [Scala](scala/Problemas.sc), [Java](java/Problemas.java) y [Python](python/problemas.py).
 
 #### 1. Selección — Identificar productos agotados
 
