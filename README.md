@@ -101,7 +101,162 @@ println(notas.filter(aprobar)) // List(7, 9)
 
 Al llamar a `crearFiltro(7)`, la función que se devuelve conserva acceso a ese `7`. Así puede comparar cada nota con el mínimo aunque `crearFiltro` ya haya terminado.
 
-## Parte 3 — Aplicar
+## Parte 3 — Aplicar funciones anónimas
+
+### Instrucciones de la actividad
+
+Elige al menos cuatro tipos de problemas. Para cada uno, describe una situación real, muestra cómo resolverla con funciones anónimas en Scala, Java con Streams y Python con `lambda`, y presenta la salida de las tres versiones.
+
+### 3.1 Catálogo de tipos de problemas
+
+Elegí selección, transformación, validación y acumulación. Para los cuatro ejercicios uso un catálogo de 12 productos. Cada producto tiene nombre, categoría, precio unitario en dólares y cantidad en stock.
+
+En Scala defino una `case class Producto` y creo la lista directamente con `List(Producto(...), ...)`. En Java uso un `record` y en Python una `dataclass`. Los tres programas tienen los mismos productos en el mismo orden.
+
+Los programas completos están en [Scala](scala/Problemas.scala), [Java](java/Problemas.java) y [Python](python/problemas.py).
+
+#### 1. Selección — Identificar productos agotados
+
+**Situación real.** Antes de hacer un pedido al proveedor, el encargado de compras necesita saber qué productos ya tienen cero unidades en stock.
+
+**Scala**
+
+```scala
+val agotados = productos.filter(p => p.stock == 0).map(p => p.nombre)
+```
+
+**Java**
+
+```java
+var agotados = productos.stream()
+    .filter(p -> p.stock() == 0)
+    .map(p -> p.nombre())
+    .collect(Collectors.joining(", "));
+```
+
+**Python**
+
+```python
+agotados = filter(lambda p: p.stock == 0, productos)
+nombres = ", ".join(map(lambda p: p.nombre, agotados))
+```
+
+`filter` conserva los productos con stock cero y `map` obtiene sus nombres.
+
+**Salida de cada versión**
+
+| Scala | Java | Python |
+| --- | --- | --- |
+| Pasta, Teclado | Pasta, Teclado | Pasta, Teclado |
+
+#### 2. Transformación — Calcular el valor del stock por producto
+
+**Situación real.** Contabilidad necesita registrar cuánto valen las existencias de cada producto. Por ejemplo, si hay 40 unidades de arroz a 4 dólares cada una, esa línea del inventario vale 160 dólares.
+
+**Scala**
+
+```scala
+val valores = productos.map(p => p.precio * p.stock)
+```
+
+**Java**
+
+```java
+var valores = productos.stream()
+    .map(p -> Integer.toString(p.precio() * p.stock()))
+    .collect(Collectors.joining(", "));
+```
+
+**Python**
+
+```python
+valores = map(lambda p: p.precio * p.stock, productos)
+```
+
+La lambda transforma cada producto en un importe al multiplicar su precio por su stock. En Java, el importe se convierte a texto para mostrar los resultados separados por comas.
+
+**Salida de cada versión, en USD**
+
+| Lenguaje | Valor por producto, en el orden de la lista |
+| --- | --- |
+| Scala | 160, 120, 0, 66, 96, 80, 216, 0, 450, 150, 60, 150 |
+| Java | 160, 120, 0, 66, 96, 80, 216, 0, 450, 150, 60, 150 |
+| Python | 160, 120, 0, 66, 96, 80, 216, 0, 450, 150, 60, 150 |
+
+#### 3. Validación — Revisar el catálogo antes de publicarlo
+
+**Situación real.** La tienda necesita verificar que todos los precios sean mayores que cero antes de publicar su catálogo en línea. También necesita saber si hay al menos un producto agotado para mostrar un aviso.
+
+**Scala**
+
+```scala
+val existeAgotado = productos.exists(p => p.stock == 0)
+val preciosValidos = productos.forall(p => p.precio > 0)
+```
+
+**Java**
+
+```java
+var existeAgotado = productos.stream().anyMatch(p -> p.stock() == 0);
+var preciosValidos = productos.stream().allMatch(p -> p.precio() > 0);
+```
+
+**Python**
+
+```python
+existe_agotado = any(map(lambda p: p.stock == 0, productos))
+precios_validos = all(map(lambda p: p.precio > 0, productos))
+```
+
+Para activar el aviso basta encontrar un producto agotado. Para validar los precios, todos los productos deben cumplir la condición.
+
+**Salida de cada versión**
+
+| Lenguaje | ¿Hay algún agotado? | ¿Todos los precios son positivos? |
+| --- | --- | --- |
+| Scala | Sí | Sí |
+| Java | Sí | Sí |
+| Python | Sí | Sí |
+
+#### 4. Acumulación — Calcular el valor total del inventario
+
+**Situación real.** Al cierre del mes, el administrador necesita un solo importe que represente el valor de todas las existencias de la tienda.
+
+**Scala**
+
+```scala
+val total = productos.foldLeft(0)((subtotal, p) => subtotal + p.precio * p.stock)
+```
+
+**Java**
+
+```java
+var total = productos.stream()
+    .mapToInt(p -> p.precio() * p.stock())
+    .reduce(0, (a, b) -> a + b);
+```
+
+**Python**
+
+```python
+from functools import reduce
+
+total = reduce(lambda subtotal, p: subtotal + p.precio * p.stock, productos, 0)
+```
+
+La suma empieza en cero. En Scala y Python, la lambda agrega al subtotal el importe del producto actual. En Java, `mapToInt` obtiene los importes y `reduce` los suma.
+
+**Salida de cada versión**
+
+| Scala | Java | Python |
+| --- | --- | --- |
+| 1548 USD | 1548 USD | 1548 USD |
+
+### Capturas de ejecución
+
+- [Ejecución en Scala](img/scala.png)
+- [Ejecución en Java](img/java.png)
+- [Ejecución en Python](img/python.png)
 
 ## Parte 4 — Ampliar
 
