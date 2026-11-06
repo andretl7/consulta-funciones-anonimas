@@ -389,3 +389,27 @@ Las funciones anónimas me permitieron escribir la regla de cada ejercicio justo
 
 Esto se relaciona con el caso de Apache Spark de la Parte 1. Allí, la lambda indica cómo calcular la longitud de una línea y Spark aplica esa regla a los datos repartidos entre varias máquinas. En mi ejercicio el catálogo era pequeño, pero la idea es la misma. La lambda describe qué hacer con un elemento y la herramienta se encarga de aplicar esa regla al conjunto de datos.
 
+## Instrucciones de ejecución
+
+Desde la raíz del repositorio, ejecuta cada comando por separado. Se necesita Scala CLI, un JDK con JShell (por ejemplo, Java 17 o posterior) y Python 3.
+
+```bash
+# Parte 3
+scala-cli run scala/Problemas.sc --server=false
+jshell java/Problemas.java
+python3 python/problemas.py
+
+# Parte 4
+scala-cli run operaciones/Operaciones.sc --server=false
+```
+
+Después de ejecutar Java, escribe `/exit` cuando aparezca `jshell>` para volver a la terminal.
+
+## Referencias
+
+- Apache Spark. [Guía de programación con RDD](https://spark.apache.org/docs/latest/rdd-programming-guide.html#rdd-operations). Caso de uso y fragmento de PySpark de la Parte 1.
+- pandas. [Documentación de `DataFrame.assign`](https://pandas.pydata.org/pandas-docs/version/1.5.3/reference/api/pandas.DataFrame.assign.html). Caso de uso y fragmento de la Parte 1.
+- Scala. [Documentación de `List`](https://www.scala-lang.org/api/2.13.16/scala/collection/immutable/List.html). Operaciones sobre listas de las Partes 3 y 4.
+- Oracle. [Expresiones lambda en Java](https://docs.oracle.com/javase/tutorial/java/javaOO/lambdaexpressions.html). Sintaxis y tipos de las lambdas en Java.
+- Python. [Guía de programación funcional](https://docs.python.org/3/howto/functional.html). Funciones para trabajar con colecciones.
+- OpenAI Codex. Apoyo en la búsqueda de fuentes, la explicación de conceptos y la preparación y revisión de ejemplos. 
