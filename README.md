@@ -360,3 +360,32 @@ println(prioridad.map(p => p.nombre))
 [Captura de ejecución de la Parte 4](img/operaciones.png)
 
 ## Parte 5 — Comparar y concluir
+
+### Instrucciones de la actividad
+
+Compara Scala, Java y Python a partir de las soluciones de la Parte 3. Explica en qué lenguaje te resultó más natural resolver los ejercicios y en qué tipo de problema encontraste más diferencias. Para concluir, explica la importancia de las funciones anónimas al trabajar con listas y relaciona tu respuesta con un caso de la Parte 1.
+
+### 5.1 Scala, Java y Python frente a frente
+
+| Criterio | Scala | Java | Python |
+| --- | --- | --- | --- |
+| Sintaxis de la lambda | `p => p.stock == 0` | `p -> p.stock() == 0` | `lambda p: p.stock == 0` |
+| Cómo se declara el tipo | Scala deduce que `p` es un `Producto` porque la lista contiene productos. También puedo declarar el tipo de la función como `Producto => Boolean`. | Java deduce el tipo de `p` a partir del Stream. Para `filter`, la lambda tiene como tipo objetivo `Predicate<Producto>`. | `lambda` se escribe sin tipos en los parámetros. Python comprueba los tipos al ejecutar el código. |
+| Operaciones usadas con la lista | `filter`, `map`, `exists`, `forall` y `foldLeft`. | `filter`, `map`, `anyMatch`, `allMatch`, `mapToInt` y `reduce` mediante Streams. | `filter`, `map`, `any`, `all` y `reduce` de `functools`. |
+| Restricción del lenguaje | Si Scala no puede deducir el tipo del parámetro por el contexto, debo indicarlo, por ejemplo con `(p: Producto) => p.stock == 0`. | Una lambda necesita una interfaz funcional como tipo objetivo. Por ejemplo, `filter` espera un predicado que devuelva un booleano. | El cuerpo de una lambda se limita a una expresión. |
+| Legibilidad según mi experiencia | Me resultó el más claro porque puedo aplicar las operaciones directamente sobre `productos` y leer los pasos en orden. | Entendí los nombres de las operaciones, pero tuve que seguir más llamadas, como `stream()` y `collect()`, para mostrar el resultado de la selección. | La sintaxis me pareció corta, aunque en la validación tuve que leer expresiones anidadas como `any(map(...))`. |
+
+**¿En qué lenguaje me resultó más natural resolver los problemas?**
+
+En lo personal, me gustó más Scala. En el ejercicio de selección pude escribir `productos.filter(p => p.stock == 0).map(p => p.nombre)` y leerlo en el mismo orden en que pensé la solución. Primero filtro los productos agotados y después obtengo sus nombres. También me parecieron claros `exists` y `forall`, porque se parecen a las preguntas que quería responder sobre el inventario.
+
+**¿En qué tipo de problema encontré más diferencias?**
+
+Encontré más diferencias en la acumulación. En Scala usé `foldLeft` y en Python usé `reduce`. En ambos casos, la lambda recibe el subtotal y el producto actual, calcula el valor de ese producto y lo suma. En Java lo hice en dos pasos. Primero usé `mapToInt` para convertir cada producto en su importe y después `reduce` para sumar esos importes. Los tres programas dieron el mismo total de 1548 USD.
+
+### 5.2 Conclusión
+
+Las funciones anónimas me permitieron escribir la regla de cada ejercicio justo donde la necesitaba. Por ejemplo, en la selección usé `p => p.stock == 0` para indicar qué productos debía conservar `filter`. En la transformación cambié la regla para que `map` calculara el valor de las existencias de cada producto. Así pude concentrarme en la condición o el cálculo de cada ejercicio mientras la operación se encargaba de recorrer la lista.
+
+Esto se relaciona con el caso de Apache Spark de la Parte 1. Allí, la lambda indica cómo calcular la longitud de una línea y Spark aplica esa regla a los datos repartidos entre varias máquinas. En mi ejercicio el catálogo era pequeño, pero la idea es la misma. La lambda describe qué hacer con un elemento y la herramienta se encarga de aplicar esa regla al conjunto de datos.
+
